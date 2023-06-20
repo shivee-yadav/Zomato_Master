@@ -1,5 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const Router = express.Router();
 
@@ -14,29 +15,40 @@ Access     Public
 Method     POST
 */
 
-Router.post("/signup" , async(req,res) => {
-    try{
-        const { email , password, fullname, phoneNumber } = req.body.credentials;
+Router.post("/signup", async (req, res) => {
+  try {
+    const { email, password, fullname, phoneNumber } = req.body.credentials;
 
-        //check whether the email or phone number exists
-        const checkUserByEmail = await UserModel.findOne({ email });
-        const checkUserByPhone = await UserModel.findOne({ phoneNumber });
+    //check whether the email or phone number exists
+    const checkUserByEmail = await UserModel.findOne({ email });
+    const checkUserByPhone = await UserModel.findOne({ phoneNumber });
 
-        if( checkUserByEmail || checkUserByPhone ){
-            return res.json({error: "User already exists"});
-        }
-
-//hashing ->encrypting your password in a non-understandable code
-//salting ->encrypting again and again to increase the security
-
-        const bcryptSalt = await bcrypt.genSalt(8);//salting will be done 8 times
-
-        const hashedPassword = await bcrypt.hash(password, bcryptSalt);//the password is being hashed and then salted
-
-
-    } catch (error) {
-        return res.status(500).json({error: error.message});
+    if (checkUserByEmail || checkUserByPhone) {
+      return res.json({ error: "User already exists" });
     }
+
+    //hashing ->encrypting your password in a non-understandable code
+    //salting ->encrypting again and again to increase the security
+
+    const bcryptSalt = await bcrypt.genSalt(8); //salting will be done 8 times
+
+    const hashedPassword = await bcrypt.hash(password, bcryptSalt); //the password is being hashed and then salted
+
+    //DB
+    await UserModel.create({
+      ...req.body.credentials,
+      password: hashedPassword,
+    });
+
+    //JWT Auth Token
+    const token = jwt.sign({ user: { fullname, email } }, "ZomatoApp");
+
+    return res.status(200).json({token});
+
+
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 export default Router;
