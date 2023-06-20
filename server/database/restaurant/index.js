@@ -23,7 +23,7 @@ const RestaurantSchema = new mongoose.Schema({
     website: String,
     popularDishes: [String],
     averageCost: Number,
-    amenties:[String],
+    amenities:[String],
     menuImages: {
         type: mongoose.Types.ObjectId,
         ref:"Images"
@@ -42,6 +42,9 @@ const RestaurantSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref:"Images"
     }
+},
+{
+    timestamps: true
 });
 
 export const RestaurantModel = mongoose.model("Restaurants", RestaurantSchema);
