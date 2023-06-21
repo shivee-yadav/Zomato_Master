@@ -18,22 +18,18 @@ Method     POST
 
 Router.post("/signup", async (req, res) => {
   try {
-    const { email, password, fullname, phoneNumber } = req.body.credentials;
 
-    await UserModel.findEmailAndPhone(email,phoneNumber);
+    await UserModel.findEmailAndPhone(req.body.credentials);
 
     //hashing ->encrypting your password in a non-understandable code
     //salting ->encrypting again and again to increase the security
 
     
     //DB
-    await UserModel.create({
-      ...req.body.credentials,
-      password: hashedPassword,
-    });
+    const newUser = await UserModel.create(req.body.credentials);
 
     //JWT Auth Token
-    const token = jwt.sign({ user: { fullname, email } }, "ZomatoApp");
+    const token = newUser.generateJwtToken();
 
     return res.status(200).json({token});
 

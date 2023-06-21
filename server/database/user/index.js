@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const UserSchema = new mongoose.Schema({
     fullname: {type: String, required: true},
@@ -12,7 +13,11 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 });
 
-UserSchema.statics.findEmailAndPhone = async (email, phoneNumber) => {
+UserSchema.methods.generateJwtToken = function () {
+    return jwt.sign({user: this._id.toString()}, "ZomatoApp");
+};
+
+UserSchema.statics.findEmailAndPhone = async ({email, phoneNumber}) => {
     //check whether the email exists
     const checkUserByEmail = await UserModel.findOne({email});
     
@@ -42,7 +47,7 @@ UserSchema.pre("save",function(next){
 
             ///assigning hashed password
             user.password = hash;
-            return next;
+            return next();
         });
     });
 
