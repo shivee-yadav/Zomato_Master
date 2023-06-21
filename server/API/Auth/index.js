@@ -7,6 +7,7 @@ const Router = express.Router();
 //Models
 import { UserModel } from "../../database/user";
 
+
 /*
 Route      /signup
 Descrip    signup with email and password
