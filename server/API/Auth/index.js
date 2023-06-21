@@ -20,13 +20,7 @@ Router.post("/signup", async (req, res) => {
   try {
     const { email, password, fullname, phoneNumber } = req.body.credentials;
 
-    //check whether the email or phone number exists
-    const checkUserByEmail = await UserModel.findOne({ email });
-    const checkUserByPhone = await UserModel.findOne({ phoneNumber });
-
-    if (checkUserByEmail || checkUserByPhone) {
-      return res.json({ error: "User already exists" });
-    }
+    await UserModel.findEmailAndPhone(email,phoneNumber);
 
     //hashing ->encrypting your password in a non-understandable code
     //salting ->encrypting again and again to increase the security
@@ -58,3 +52,6 @@ export default Router;
 //encrypted once -> 2356dvdjrfgvzcdwdefw4  ->encryptedtwice--->242645855hbxvstwsdzyr565r
 //good websites have 5-10 encryptions of passwords
 //bcrypt.js -> for encryptions
+
+//UserModel.OurStatic() ->
+//checkUserByEmail.ourMethods() ->  to refractor our code
