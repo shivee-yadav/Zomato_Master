@@ -25,10 +25,7 @@ Router.post("/signup", async (req, res) => {
     //hashing ->encrypting your password in a non-understandable code
     //salting ->encrypting again and again to increase the security
 
-    const bcryptSalt = await bcrypt.genSalt(8); //salting will be done 8 times
-
-    const hashedPassword = await bcrypt.hash(password, bcryptSalt); //the password is being hashed and then salted
-
+    
     //DB
     await UserModel.create({
       ...req.body.credentials,
@@ -55,3 +52,6 @@ export default Router;
 
 //UserModel.OurStatic() ->
 //checkUserByEmail.ourMethods() ->  to refractor our code
+// const bcryptSalt = await bcrypt.genSalt(8); //salting will be done 8 times
+
+// const hashedPassword = await bcrypt.hash(password, bcryptSalt); //the password is being hashed and then salted
