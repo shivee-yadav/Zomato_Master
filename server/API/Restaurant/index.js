@@ -61,6 +61,8 @@ Router.get("/search", async (req,res) => {
             name: {$regex: searchString, $options: "i"}//"i" is to make the search case insensitive
         });
 
+        return res.json({restaurants});
+
     } catch (error){
 
         return res.status(500).json({error: error.message});
