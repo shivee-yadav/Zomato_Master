@@ -28,22 +28,26 @@ Router.get("/:_id" , async(req,res) => {
 
 
 /*
-Route          /
-Des            Get all the food based on the particlar restaurant
-Params         _id
+Route          /r
+Des            Get all the food based on particular category
+Params         category
 Access         Public
 Method         GET
 */
-Router.get("/:_id" , async(req,res) => {
+Router.get("/r/:category" , async(req,res) => {
     try{
 
-        const {_id} = req.params;
-        const food = await FoodModel.find({ restaurant: _id });
+        const {category} = req.params;
+        const foods = await FoodModel.find({ 
+            category: {$regex: category, $options: "i"}
+        });
 
-        return res.json({ food });
+        return res.json({ foods });
 
     } catch(error) {
         return res.status(500).json({error: error.message});
 
     }
-})
+});
+
+export default Router;
