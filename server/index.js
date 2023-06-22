@@ -5,21 +5,41 @@ const express = require("express");
 //babel - enabling es6
 import cors from "cors";
 import helmet from "helmet";
+import passport from "passport";
+
+//config
+import googleAuthConfig from "./config/google.config";
 
 import Auth from "./API/Auth"
+import Restaurant from "./API/Restaurant"
 
 import connection from "./database/connection";
 
+const session = require('express-session');
+
 const zomato = express();
+
 
 zomato.use(express.json());
 zomato.use(express.urlencoded({extended: false}));
 zomato.use(helmet());
 zomato.use(cors());
 
+zomato.use(session({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'SECRET' 
+  }));
+zomato.use(passport.initialize());
+zomato.use(passport.session());
+
+//passport configuration
+googleAuthConfig(passport);
+
 //for application routes
 //loacalhost:4000/auth/signup
 zomato.use("/auth", Auth);
+zomato.use("/restaurant", Restaurant);
 
 zomato.get("/", (req,res) => res.json({message: "SetUp Success!!!"}));
 
