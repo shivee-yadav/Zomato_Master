@@ -13,6 +13,9 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 });
 
+//hashing ->encrypting your password in a non-understandable code
+//salting ->encrypting again and again to increase the security
+
 UserSchema.methods.generateJwtToken = function () {
     return jwt.sign({user: this._id.toString()}, "ZomatoApp");
 };
@@ -29,6 +32,22 @@ UserSchema.statics.findEmailAndPhone = async ({email, phoneNumber}) => {
     }
 
     return false;
+};
+
+
+UserSchema.statics.findByEmailAndPassword = async ({email, password}) => {
+    //check whether the email exists
+    const user = await UserModel.findOne({email});
+    
+    
+    //compare the passwords
+    const doesPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if(!doesPasswordMatch){
+        throw new Error("Invalid Password!");
+    }
+
+    return user;
 };
 
 UserSchema.pre("save",function(next){

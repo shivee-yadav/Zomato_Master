@@ -21,10 +21,6 @@ Router.post("/signup", async (req, res) => {
 
     await UserModel.findEmailAndPhone(req.body.credentials);
 
-    //hashing ->encrypting your password in a non-understandable code
-    //salting ->encrypting again and again to increase the security
-
-    
     //DB
     const newUser = await UserModel.create(req.body.credentials);
 
@@ -39,7 +35,35 @@ Router.post("/signup", async (req, res) => {
   }
 });
 
+/*
+Route      /signin
+Descrip    signin with email and password
+Params     None
+Access     Public
+Method     POST
+*/
+
+Router.post("/signin", async (req, res) => {
+  try {
+
+    const user = await UserModel.findByEmailAndPassword(
+      req.body.credentials
+    );
+
+    //JWT Auth Token
+    const token = user.generateJwtToken();
+
+    return res.status(200).json({token, status:"success"});
+
+
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 export default Router;
+
+
 
 //Password->Shivee
 //encrypted once -> 2356dvdjrfgvzcdwdefw4  ->encryptedtwice--->242645855hbxvstwsdzyr565r
