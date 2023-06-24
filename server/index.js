@@ -53,3 +53,6 @@ connection().then(() => console.log("Server is up and running"))
 
 //cors->package to maintain so many API calls
 //helmet ->added for extra security layers
+
+//aws:
+//upload the images to the server's RAM -> from server's RAM the images are being uploaded to the AWS -> from AWS the images are being fetched into the App
