@@ -17,12 +17,15 @@ const ReviewSchema = new mongoose.Schema({
         type:Number,
         required: true
     },
-    reviewText: [
+    reviewText: 
         {
             type: String,
             required: true
         }
-    ],
+    ,
+    isRestaurantReview: Boolean,
+    isFoodReview: Boolean
+    ,
     photos: [{
         type:mongoose.Types.ObjectId,
         ref:"Images"
