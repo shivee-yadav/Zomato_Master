@@ -1,15 +1,16 @@
 import express from "express";
+import AWS from "aws-sdk";
+import multer from "multer";
 
 import { ImageModel } from "../../database/image";
 
+import {s3Upload} from "../../Utilities/AWS/s3";
+
 const Router = express.Router();
 
-//AWS S3 bucket config
-const s3Bucket = new AWS.S3({
-    accessKeyID: process.env.AWS_S3_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_S3_SECRET_KEY,
-    region: "ap-south-1"
-});
+const storage = multer.memoryStorage();//storing everything in the RAM of the server
+const upload = multer({storage});//uploading the content of the server to AWS
+
 
 /*
 Route          /
@@ -19,10 +20,25 @@ Access         Public
 Method         GET
 */
 
-Router.post("/", async (req,res) => {
+Router.post("/", upload.single("file"), async (req,res) => {//we'll upload a file
     try{
+        const file=req.file;
 
+       const bucketOptions = {
+        Bucket: "shivee-bucket",//bucketname
+        Key : file.originalname,//name
+        Body: file.buffer,//url
+        COntentType: file.mimetype,//filetype
+        ACL: "public-read"//read only //Access Control List
+       } ;
+
+      
+    const uploadImage = await s3Upload(bucketOptions);
+       
+       
     } catch (error) {
+
+        return res.status(500).json({error: error.message});
 
     }
 });
