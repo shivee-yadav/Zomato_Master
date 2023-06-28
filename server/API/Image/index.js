@@ -24,8 +24,6 @@ Router.post("/", upload.single("file"), async (req,res) => {//we'll upload a fil
     try{
         const file=req.file;
 
-        console.log(file);
-
        const bucketOptions = {
         Bucket: "shivee-bucket",//bucketname
         Key : file.originalname,//name

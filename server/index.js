@@ -65,5 +65,9 @@ connection().then(() => console.log("Server is up and running"))
 //aws:
 //upload the images to the server's RAM -> from server's RAM the images are being uploaded to the AWS -> from AWS the images are being fetched into the App
 
+
+//joi->joi lets you describe your data using a simple, intuitive, and readable language.
+
+
 //redux-> connects frontend to backend
 //
