@@ -24,16 +24,20 @@ Router.post("/", upload.single("file"), async (req,res) => {//we'll upload a fil
     try{
         const file=req.file;
 
+        console.log(file);
+
        const bucketOptions = {
         Bucket: "shivee-bucket",//bucketname
         Key : file.originalname,//name
         Body: file.buffer,//url
-        COntentType: file.mimetype,//filetype
+        ContentType: file.mimetype,//filetype
         ACL: "public-read"//read only //Access Control List
        } ;
 
       
     const uploadImage = await s3Upload(bucketOptions);
+
+    return res.status(200).json({ uploadImage });
        
        
     } catch (error) {
