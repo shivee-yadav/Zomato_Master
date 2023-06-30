@@ -24,6 +24,27 @@ const MobileNav = () => {
     );
 };
 
+const LgNav = () => {
+    return (
+        <>
+         <div className="flex justify-between w-full  lg:block hidden">
+         <div className="w-28">
+            <img 
+            src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
+            alt="logo"
+            className="w-full h-full"
+            />
+        </div>
+        <div >
+            <button className="bg-zomato-400 text-white py-2 px-3 rounded-full">Use App</button>
+        </div>
+         </div>
+        
+        </>
+    );
+
+}
+
 const Navbar = () => {
 
    return(
@@ -31,8 +52,10 @@ const Navbar = () => {
     <>
     <nav className="p-4 flex bg-white shadow-md items-center justify-between ">
        <MobileNav />
+       <LgNav />
+      
     </nav>
-    </>
+     </>
 
    );
 
