@@ -1,7 +1,16 @@
 import React from "react";
 
+import Navbar from "../Components/Navbar";
+
 const HomeLayout = (props) => {
-    return <>Home Layout {props.children}</>
+    return (
+    <>
+    <div className="container mx-auto lg:px-20">
+        <Navbar />
+    {props.children}
+    </div>
+    </>
+    );
 }
 
 export default HomeLayout;
