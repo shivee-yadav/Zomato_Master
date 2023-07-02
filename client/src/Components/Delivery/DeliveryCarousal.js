@@ -15,6 +15,14 @@ const DeliveryCarousal = () => {
         <DeliveryFoodCategory />
         <DeliveryFoodCategory />
         <DeliveryFoodCategory />
+        <DeliveryFoodCategory />
+        <DeliveryFoodCategory />
+        <DeliveryFoodCategory />
+        <DeliveryFoodCategory />
+        <DeliveryFoodCategory />
+        <DeliveryFoodCategory />
+        <DeliveryFoodCategory />
+        <DeliveryFoodCategory />
         </div>
         </div>
         </>
